@@ -1,68 +1,36 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
+import { trpc } from "@/lib/trpc";
 
 export type AuthUser = {
   id?: string | number;
   name?: string | null;
   email?: string | null;
+  role?: string;
   [key: string]: unknown;
 };
 
-type AuthState = {
-  user: AuthUser | null;
-  loading: boolean;
-};
-
-const AUTH_STATE_EVENT = "auth-state-changed";
-
-function readStoredUser(): AuthUser | null {
-  try {
-    const stored = localStorage.getItem("auth-user");
-    return stored ? (JSON.parse(stored) as AuthUser) : null;
-  } catch {
-    return null;
-  }
-}
-
-function getInitialState(): AuthState {
-  if (typeof window === "undefined") {
-    return { user: null, loading: true };
-  }
-
-  return { user: readStoredUser(), loading: false };
-}
-
 /**
- * Lightweight client-side auth state hook.
- *
- * The login flow should store the authenticated user under `auth-user` and
- * dispatch `auth-state-changed`, or replace this storage integration with the
- * project's real session endpoint/provider when one is available.
+ * Client-side auth state, backed by the real session cookie set on login
+ * (see server/_core/oauth.ts). `auth.me` is a public tRPC query that simply
+ * returns the current user (or null) — it never throws, so this is safe to
+ * call on every page.
  */
 export function useAuth() {
-  const [state, setState] = useState<AuthState>(getInitialState);
-
-  const refresh = useCallback(() => {
-    setState({ user: readStoredUser(), loading: false });
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener(AUTH_STATE_EVENT, refresh);
-    window.addEventListener("storage", refresh);
-
-    return () => {
-      window.removeEventListener(AUTH_STATE_EVENT, refresh);
-      window.removeEventListener("storage", refresh);
-    };
-  }, [refresh]);
+  const utils = trpc.useUtils();
+  const meQuery = trpc.auth.me.useQuery(undefined, { retry: false });
+  const logoutMutation = trpc.auth.logout.useMutation({
+    onSuccess: () => {
+      utils.auth.me.setData(undefined, null);
+    },
+  });
 
   const logout = useCallback(() => {
-    localStorage.removeItem("auth-user");
-    window.dispatchEvent(new Event(AUTH_STATE_EVENT));
-  }, []);
+    logoutMutation.mutate();
+  }, [logoutMutation]);
 
   return {
-    user: state.user,
-    loading: state.loading,
+    user: (meQuery.data as AuthUser | null) ?? null,
+    loading: meQuery.isLoading,
     logout,
   };
 }
