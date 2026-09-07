@@ -39,11 +39,11 @@ import {
 } from "@/services/api";
 
 const asset = {
-  hero: "/manus-storage/jalisco-hero_75436b0c.jpg",
-  mark: "/manus-storage/jalisco-logo-new_dc5379db.png",
-  dish: "/manus-storage/jalisco-dish-fallback_240c03ac.jpg",
-  interior: "/manus-storage/jalisco-interior-fallback_d52f6af3.jpg",
-  cocktail: "/manus-storage/jalisco-cocktail-fallback_940850f7.jpg",
+  hero: "/images/jalisco-hero.jpg",
+  mark: "/images/jalisco-logo.png",
+  dish: "/images/jalisco-dish.jpg",
+  interior: "/images/jalisco-interior.jpg",
+  cocktail: "/images/jalisco-cocktail.jpg",
 };
 
 const fallbackMenu: MenuCategory[] = [
