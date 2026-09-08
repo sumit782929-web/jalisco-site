@@ -130,7 +130,7 @@
 .hero-content { max-width: 840px; padding: clamp(8rem,17vh,12rem) clamp(1.4rem,11vw,12rem) 8rem; position: relative; transition: transform 450ms var(--ease); z-index: 3; }
 .kicker { color: var(--muted-cream); font-size: .61rem; font-weight: 800; letter-spacing: .24em; margin: 0 0 1.8rem; text-transform: uppercase; }
 .kicker.gold { color: var(--gold); }
-.hero h1 { color: var(--cream); font-family: var(--serif); font-size: clamp(3.4rem,7.2vw,7.8rem); font-weight: 500; letter-spacing: -.08em; line-height: .88; margin: 0; max-width: 810px; }
+.hero h1 { color: var(--cream); font-family: var(--serif); font-size: clamp(2.6rem,4.4vw,5.6rem); font-weight: 500; letter-spacing: -.08em; line-height: .95; margin: 0; max-width: 810px; }
 .hero h1 .accent-line, .statement-copy em, .menu-section h2 em, .gallery-header h2 em, .quote-section em, .visit-copy h2 em, .reservation-drawer h2 em { color: var(--terracotta); font-style: italic; }
 .hero-subtitle { color: var(--muted-cream); font-size: .92rem; line-height: 1.7; margin: 2rem 0; max-width: 390px; }
 .hero-buttons { align-items: center; display: flex; flex-wrap: wrap; gap: 1rem; }
